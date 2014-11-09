@@ -29,32 +29,44 @@ public class Assignments {
 		Scanner sc = new Scanner(a);
 		String var = sc.next();
 		sc.next();
+		String result = "";
+		String str = sc.next();
+			if(Character.isLetter(str.charAt(0))) {
+				Object o = s.getData(str);
+				if (o == null || o.toString().equals("unassigned")) {
+					
+				}
+					
+			}
+				
+		}
 		buildInfix(sc.nextLine());
 		s.insert(var, evaluate());
 		sc.close();
 	}
 	
+	
 	/*
 	 * Scans through expression until empty. During scan it pushes operands onto that stack and treats operators separately. After scan it finishes
 	 * the rest of the operations left on that stack and returns the final resulting node as the root.
 	 */
-	private void buildInfix(String exp) {
+	private void buildInfix(String exp, String a) {
 		Scanner scan = new Scanner (exp);
-		String str;
+		String str, result;
 		boolean assigned = true;
-		while (scan.hasNext() && assigned) {
+		while (scan.hasNext()) {
 			str = scan.next();
 			char c = str.charAt(0);
-			if (Character.isLetter(c)) {
+			if(Character.isLetter(c)) {
 				Object o = s.getData(str);
-				if (o != null)
-					operand.push(new Node(null, o.toString(), null));
-				else {
+				if (o == null || o.toString().equals("unassigned")) {
 					assigned = false;
-					
+					result += str + " has not been assigned a value\n";
 				}
+				else
+					operand.push(new Node(null, o.toString(), null));
 			}
-			else if (Character.isDigit(c)) {
+			else if (Character.isDigit(str.charAt(0))) {
 				operand.push(new Node(null, str, null));
 			}
 			else {
@@ -63,11 +75,17 @@ public class Assignments {
 		}
 		// After the expression is read there still might be operations left on the stack depending on associativity
 		// and precedence order if there were no surrounding parenthesis.
-		while (operator.size() > 0 && assigned) {
-			offStack(operator.pop().data);
+		if (assigned) {
+			while (operator.size() > 0) {
+				offStack(operator.pop().data);
+			}
+			scan.close();
+			root = operand.pop();
 		}
-		scan.close();
-		root = operand.pop();
+		else {
+			System.out.println("")
+			
+		}
 	}
 	
 	// Gives us the precedence ranking of the operators.
