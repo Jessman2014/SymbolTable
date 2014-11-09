@@ -26,11 +26,12 @@ public class Assignments {
 	SymbolTable s = new SymbolTable(10);
 	
 	public void variableAssign(String a) {
-		Scanner s = new Scanner(a);
-		String var = s.next();
-		
-		s.next();
-		buildInfix(s.nextLine());
+		Scanner sc = new Scanner(a);
+		String var = sc.next();
+		sc.next();
+		buildInfix(sc.nextLine());
+		s.insert(var, evaluate());
+		sc.close();
 	}
 	
 	/*
@@ -40,9 +41,20 @@ public class Assignments {
 	private void buildInfix(String exp) {
 		Scanner scan = new Scanner (exp);
 		String str;
-		while (scan.hasNext()) {
+		boolean assigned = true;
+		while (scan.hasNext() && assigned) {
 			str = scan.next();
-			if (str.charAt(0) >= '0' && str.charAt(0) <= '9') {
+			char c = str.charAt(0);
+			if (Character.isLetter(c)) {
+				Object o = s.getData(str);
+				if (o != null)
+					operand.push(new Node(null, o.toString(), null));
+				else {
+					assigned = false;
+					
+				}
+			}
+			else if (Character.isDigit(c)) {
 				operand.push(new Node(null, str, null));
 			}
 			else {
@@ -51,7 +63,7 @@ public class Assignments {
 		}
 		// After the expression is read there still might be operations left on the stack depending on associativity
 		// and precedence order if there were no surrounding parenthesis.
-		while (operator.size() > 0) {
+		while (operator.size() > 0 && assigned) {
 			offStack(operator.pop().data);
 		}
 		scan.close();
@@ -75,9 +87,7 @@ public class Assignments {
 			return 0;
 		default:
 			return -1;
-		
 		}
-		
 	}
 	
 	public void offStack(String a) {
@@ -156,25 +166,24 @@ public class Assignments {
 		
 	}
 	
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		BufferedReader r = new BufferedReader(new FileReader (args[0]));
-		Assignments a = new Assignments();
-		
-		String assn = r.readLine();
-		while (assn != null) {
-			a.buildInfix(assn);
-			Scanner scan = new Scanner(assn);
-			s.insert(scan.next(), a.evaluate());
-			scan.close();
-		}
-		r.close();
+	public void printVars() {
 		System.out.println("Final Variable Values");
 		Iterator<String> i = s.iterator();
 		while (i.hasNext()) {
 			String str = i.next();
 			System.out.println(str + " = " + (int)s.getData(str));
 		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		BufferedReader r = new BufferedReader(new FileReader (args[0]));
+		Assignments a = new Assignments();
+		String assn = r.readLine();
+		while (assn != null) {
+			a.buildInfix(assn);
+		}
+		r.close();
 	}
 
 }
