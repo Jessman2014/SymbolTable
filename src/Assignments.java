@@ -23,12 +23,15 @@ public class Assignments {
 	Node root;
 	Stack<Node> operand = new Stack<>();
 	Stack<Node> operator = new Stack<>();
+	SymbolTable s = new SymbolTable(10);
 	
-	public Assignments() {
-		// TODO Auto-generated constructor stub
+	public void variableAssign(String a) {
+		Scanner s = new Scanner(a);
+		String var = s.next();
 		
+		s.next();
+		buildInfix(s.nextLine());
 	}
-
 	
 	/*
 	 * Scans through expression until empty. During scan it pushes operands onto that stack and treats operators separately. After scan it finishes
@@ -157,7 +160,7 @@ public class Assignments {
 		// TODO Auto-generated method stub
 		BufferedReader r = new BufferedReader(new FileReader (args[0]));
 		Assignments a = new Assignments();
-		SymbolTable s = new SymbolTable(10);
+		
 		String assn = r.readLine();
 		while (assn != null) {
 			a.buildInfix(assn);
