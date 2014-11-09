@@ -1,11 +1,9 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
-
-import ExpressionTree.Node;
 
 
 public class Assignments {
@@ -22,7 +20,6 @@ public class Assignments {
 		}
 	}
 	
-	Node root;
 	String chain = "";
 	Stack<Node> operand = new Stack<>();
 	Stack<Node> operator = new Stack<>();
@@ -37,7 +34,7 @@ public class Assignments {
 	 * Scans through expression until empty. During scan it pushes operands onto that stack and treats operators separately. After scan it finishes
 	 * the rest of the operations left on that stack and returns the final resulting node as the root.
 	 */
-	private void buildInfix(String exp) {
+	private Node buildInfix(String exp) {
 		Scanner scan = new Scanner (exp);
 		String str;
 		while (scan.hasNext()) {
@@ -54,8 +51,8 @@ public class Assignments {
 		while (operator.size() > 0) {
 			offStack(operator.pop().data);
 		}
-		root = operand.pop();
 		scan.close();
+		return operand.pop();
 	}
 	
 	// Gives us the precedence ranking of the operators.
@@ -122,7 +119,7 @@ public class Assignments {
 		}
 	}
 
-	public int evaluate() {
+	public int evaluate(Node root) {
 		return (int)evaluate(root);
 	}
 	
@@ -130,7 +127,7 @@ public class Assignments {
 	 * Uses postfix to explore left and right trees till it finds a leaf and returns the left leaf
 	 * as the variable a and the right leaf as variable b. it then evaluates them based on the operator.
 	 */
-	public double evaluate(Node r) {
+	private double evaluate1(Node r) {
 		if (r != null) {
 			double a = evaluate(r.left);
 			double b = evaluate(r.right);
@@ -161,7 +158,7 @@ public class Assignments {
 		BufferedReader r = new BufferedReader(new FileReader (args[0]));
 		Assignments a;
 		String assn = r.readLine();
-		
+		ArrayList<Node> nList = new ArrayList<>();
 		while (assn != null) {
 			a = new Assignments(assn);
 			
