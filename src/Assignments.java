@@ -122,7 +122,7 @@ public class Assignments {
 	// Recursive method to help solve with large chain reactions.
 	public void solve (String a) {
 		// If nothing or a left paren is on the stack due to previous operations we don't need to check for precedence
-		if (operator.empty() || operator.peek().data.equals("(") || a.equals("(")) {
+		if (operator.empty() || a.equals("(") || (operator.peek().data.equals("(") && !a.equals(")"))) {
 			operator.push(new Node (null, a, null));
 		}
 		else {
@@ -139,7 +139,7 @@ public class Assignments {
 				// off until the current operator can be pushed on.
 				int onStack = precedence(operator.peek().data);
 				int current = precedence(a);
-				if (current > onStack || (current == onStack && current <= 1)) 
+				if (current > onStack || (current == onStack && current > 1)) 
 					operator.push(new Node (null, a, null));
 				else {
 					offStack(operator.pop().data);
