@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -20,11 +20,11 @@ public class Assignments {
 		}
 	}
 	
-	String chain = "";
+	Node root;
 	Stack<Node> operand = new Stack<>();
 	Stack<Node> operator = new Stack<>();
 	
-	public Assignments(String assn) {
+	public Assignments() {
 		// TODO Auto-generated constructor stub
 		
 	}
@@ -34,7 +34,7 @@ public class Assignments {
 	 * Scans through expression until empty. During scan it pushes operands onto that stack and treats operators separately. After scan it finishes
 	 * the rest of the operations left on that stack and returns the final resulting node as the root.
 	 */
-	private Node buildInfix(String exp) {
+	private void buildInfix(String exp) {
 		Scanner scan = new Scanner (exp);
 		String str;
 		while (scan.hasNext()) {
@@ -52,7 +52,7 @@ public class Assignments {
 			offStack(operator.pop().data);
 		}
 		scan.close();
-		return operand.pop();
+		root = operand.pop();
 	}
 	
 	// Gives us the precedence ranking of the operators.
@@ -119,7 +119,7 @@ public class Assignments {
 		}
 	}
 
-	public int evaluate(Node root) {
+	public int evaluate() {
 		return (int)evaluate(root);
 	}
 	
@@ -127,7 +127,7 @@ public class Assignments {
 	 * Uses postfix to explore left and right trees till it finds a leaf and returns the left leaf
 	 * as the variable a and the right leaf as variable b. it then evaluates them based on the operator.
 	 */
-	private double evaluate1(Node r) {
+	private double evaluate(Node r) {
 		if (r != null) {
 			double a = evaluate(r.left);
 			double b = evaluate(r.right);
@@ -156,14 +156,22 @@ public class Assignments {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader r = new BufferedReader(new FileReader (args[0]));
-		Assignments a;
+		Assignments a = new Assignments();
+		SymbolTable s = new SymbolTable(10);
 		String assn = r.readLine();
-		ArrayList<Node> nList = new ArrayList<>();
 		while (assn != null) {
-			a = new Assignments(assn);
-			
+			a.buildInfix(assn);
+			Scanner scan = new Scanner(assn);
+			s.insert(scan.next(), a.evaluate());
+			scan.close();
 		}
-		
+		r.close();
+		System.out.println("Final Variable Values");
+		Iterator<String> i = s.iterator();
+		while (i.hasNext()) {
+			String str = i.next();
+			System.out.println(str + " = " + (int)s.getData(str));
+		}
 	}
 
 }
