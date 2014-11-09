@@ -41,19 +41,22 @@ public class Assignments {
 					result += str + " has not been assigned a value\n";
 				}
 				else
-					sb.append(" " + o.toString() + " ");
+					sb.append(o.toString() + " ");
 			}
 			else
-				sb.append(" " + str + " ");
+				sb.append(str + " ");
 		}
 		if (assigned) {
 			buildInfix(sb.toString());
-			s.insert(var, evaluate());
+			int i = evaluate();
+			if(!s.insert(var, i))
+				s.setValue(var, i);
 		}
 		else {
 			System.out.println("Error: " + a);
 			System.out.println(result);
-			s.insert(var, "unassigned");
+			if(!s.insert(var, "unassigned"))
+				s.setValue(var, "unassigned");
 		}
 		sc.close();
 	}
@@ -185,7 +188,7 @@ public class Assignments {
 		Iterator<String> i = s.iterator();
 		while (i.hasNext()) {
 			String str = i.next();
-			System.out.println(str + " = " + (int)s.getData(str));
+			System.out.println(str + " " + s.getData(str).toString());
 		}
 	}
 	

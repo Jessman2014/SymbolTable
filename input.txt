@@ -1,5 +1,7 @@
 x = 10
 xSquared = x ^ 2
 w = 3 * z
+w = y + 3 * z
 y = 2
 z = 2 * ( x + y ) ^ ( x - 8 )
+w = 3 * z
