@@ -195,8 +195,10 @@ public class Assignments {
 		Assignments a = new Assignments();
 		String assn = r.readLine();
 		while (assn != null) {
-			a.buildInfix(assn);
+			a.variableAssign(assn);
+			assn = r.readLine();
 		}
+		a.printVars();
 		r.close();
 	}
 

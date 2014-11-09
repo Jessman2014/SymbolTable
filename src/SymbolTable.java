@@ -34,7 +34,7 @@ public class SymbolTable {
 		int i = hash(k);
 		Node n = table[i];
 		while(n != null) {
-			if(n.key == k)
+			if(n.key.equals(k))
 				return false;
 			n = n.next;
 		}
@@ -49,7 +49,7 @@ public class SymbolTable {
 		int i = hash(k);
 		Node n = table[i];
 		while(n != null) {
-			if(n.key == k)
+			if(n.key.equals(k))
 				return false;
 			n = n.next;
 		}
@@ -63,7 +63,7 @@ public class SymbolTable {
 		int i = hash(k);
 		Node n = table[i];
 		while(n != null) {
-			if(n.key == k)
+			if(n.key.equals(k))
 				return true;
 			n = n.next;
 		}
@@ -76,7 +76,7 @@ public class SymbolTable {
 		int i = hash(k);
 		Node n = table[i];
 		while(n != null) {
-			if(n.key == k)
+			if(n.key.equals(k))
 				return n.data;
 			n = n.next;
 		}
@@ -99,14 +99,14 @@ public class SymbolTable {
 		//if	k	is	not	in	the	table,	return	false	
 		int i = hash(k);
 		Node n = table[i];
-		if (n.key == k) {
+		if (n.key.equals(k)) {
 			table[i] = n.next;
 			return true;
 		}
 		Node t = n;
 		n = n.next;
 		while(n != null) {
-			if(n.key == k) {
+			if(n.key.equals(k)) {
 				t.next = n.next;
 				return true;
 			}
