@@ -28,20 +28,33 @@ public class Assignments {
 	public void variableAssign(String a) {
 		Scanner sc = new Scanner(a);
 		String var = sc.next();
+		boolean assigned = true;
 		sc.next();
 		String result = "";
-		String str = sc.next();
+		StringBuilder sb = new StringBuilder();
+		while(sc.hasNext()) {
+			String str = sc.next();
 			if(Character.isLetter(str.charAt(0))) {
 				Object o = s.getData(str);
 				if (o == null || o.toString().equals("unassigned")) {
-					
+					assigned = false;
+					result += str + " has not been assigned a value\n";
 				}
-					
+				else
+					sb.append(" " + str + " ");
 			}
-				
+			else
+				sb.append(" " + str + " ");
 		}
-		buildInfix(sc.nextLine());
-		s.insert(var, evaluate());
+		if (assigned) {
+			buildInfix(sb.toString());
+			s.insert(var, evaluate());
+		}
+		else {
+			System.out.println("Error: " + a);
+			System.out.println(result);
+			s.insert(var, "unassigned");
+		}
 		sc.close();
 	}
 	
@@ -50,23 +63,12 @@ public class Assignments {
 	 * Scans through expression until empty. During scan it pushes operands onto that stack and treats operators separately. After scan it finishes
 	 * the rest of the operations left on that stack and returns the final resulting node as the root.
 	 */
-	private void buildInfix(String exp, String a) {
+	private void buildInfix(String exp) {
 		Scanner scan = new Scanner (exp);
-		String str, result;
-		boolean assigned = true;
+		String str;
 		while (scan.hasNext()) {
 			str = scan.next();
-			char c = str.charAt(0);
-			if(Character.isLetter(c)) {
-				Object o = s.getData(str);
-				if (o == null || o.toString().equals("unassigned")) {
-					assigned = false;
-					result += str + " has not been assigned a value\n";
-				}
-				else
-					operand.push(new Node(null, o.toString(), null));
-			}
-			else if (Character.isDigit(str.charAt(0))) {
+			if (Character.isDigit(str.charAt(0))) {
 				operand.push(new Node(null, str, null));
 			}
 			else {
@@ -75,17 +77,11 @@ public class Assignments {
 		}
 		// After the expression is read there still might be operations left on the stack depending on associativity
 		// and precedence order if there were no surrounding parenthesis.
-		if (assigned) {
-			while (operator.size() > 0) {
-				offStack(operator.pop().data);
-			}
-			scan.close();
-			root = operand.pop();
+		while (operator.size() > 0) {
+			offStack(operator.pop().data);
 		}
-		else {
-			System.out.println("")
-			
-		}
+		scan.close();
+		root = operand.pop();
 	}
 	
 	// Gives us the precedence ranking of the operators.
