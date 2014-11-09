@@ -41,7 +41,7 @@ public class Assignments {
 					result += str + " has not been assigned a value\n";
 				}
 				else
-					sb.append(" " + str + " ");
+					sb.append(" " + o.toString() + " ");
 			}
 			else
 				sb.append(" " + str + " ");
