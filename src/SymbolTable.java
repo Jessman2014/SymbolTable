@@ -1,5 +1,12 @@
 import java.util.Iterator;
 
+/**
+ * Stores any object with an associated string key using a hashing function, which allows constant time
+ * retrieval and insertion. Also has an iterator class.
+ * 
+ * @author Jesse Dahir-Kanehl
+ *
+ */
 
 public class SymbolTable {
 	

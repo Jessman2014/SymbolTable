@@ -5,6 +5,14 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Stack;
 
+/**
+ * Takes in Infix statements and uses the symbol table to store and retrieve variable assignments to
+ * evaluate expressions and store those in the given variable. After all statements are processed it
+ * prints out the value of all variables in the symbol table.
+ * 
+ * @author Jesse Dahir-Kanehl
+ *
+ */
 
 public class Assignments {
 
@@ -24,6 +32,7 @@ public class Assignments {
 	Stack<Node> operand = new Stack<>();
 	Stack<Node> operator = new Stack<>();
 	SymbolTable s = new SymbolTable(10);
+	private String UNAS = "unassigned";
 	
 	public void variableAssign(String a) {
 		Scanner sc = new Scanner(a);
@@ -36,9 +45,10 @@ public class Assignments {
 			String str = sc.next();
 			if(Character.isLetter(str.charAt(0))) {
 				Object o = s.getData(str);
-				if (o == null || o.toString().equals("unassigned")) {
+				if (o == null || o.toString().equals(UNAS)) {
 					assigned = false;
 					result += str + " has not been assigned a value\n";
+					s.insert(str, UNAS);
 				}
 				else
 					sb.append(o.toString() + " ");
@@ -55,8 +65,8 @@ public class Assignments {
 		else {
 			System.out.println("Error: " + a);
 			System.out.println(result);
-			if(!s.insert(var, "unassigned"))
-				s.setValue(var, "unassigned");
+			if(!s.insert(var, UNAS))
+				s.setValue(var, UNAS);
 		}
 		sc.close();
 	}
